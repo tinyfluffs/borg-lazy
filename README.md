@@ -1,3 +1,3 @@
-# mc-backup
+# borg-lazy
 
-Shim over borg backup, for Minecraft
+Low effort backups using Borg.
