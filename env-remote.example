@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+ENCRYPTION="keyfile"
+
+BORG_SSH="user@backup.example.comt"
+BORG_SSH_PORT=22
+
+DATA_DIR="/home/minecraft/mc-instances/mc-5e66d03b44dd8"
+BORG_BACKUP_DIR="~/mc.dragonhou.se"

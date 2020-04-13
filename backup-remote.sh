@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-## Backup from a remote directory to a local directory
+## Backup from a remote directory to another remote directory
 
 ENVFILE=$1
 TEMPDIR=$(mktemp -d)
@@ -18,12 +18,14 @@ fi
 
 source ${ENVFILE}
 
-if [ ! -d "$LOCAL_DIR" ]; then
+BORG_SSH_DIR="${BORG_SSH}:${BORG_BACKUP_DIR}"
+
+if [ "$2" = "init" ]; then
 	echo -e "\e[92m$(cat LICENSE | sed 's/^/        /')
 	
 	\e[36mIt appears you are running this script for the first time!
 	
-	The default encryption method is 'keyfile'. Your keyfile can be found at: ${HOME}/.config/borg/keys/$(basename ${LOCAL_DIR})
+	The default encryption method is 'keyfile'. Your keyfile can be found at: ${HOME}/.config/borg/keys/$(basename ${BACKUP_DIR})
 	To change the encryption method, set the variable ENCRYPTION=xxx
 	
 	If no password is supplied, only the keyfile will be used for encryption. To disable encryption entirely, set ENCRYPTION=none
@@ -34,15 +36,11 @@ if [ ! -d "$LOCAL_DIR" ]; then
 	--------------\e[39m
 	"
 
-	mkdir -p $(dirname $LOCAL_DIR)
-	borg init -e ${ENCRYPTION} ${LOCAL_DIR}
-	borg upgrade --disable-tam ${LOCAL_DIR}
+	borg init -e ${ENCRYPTION} ${BORG_SSH_DIR}
+	borg upgrade --disable-tam ${BORG_SSH_DIR}
+	exit 0;
 fi
 
-sshfs -p ${SSH_PORT} ${SSH}:${REMOTE_DIR} ${TEMPDIR}
-cd ${TEMPDIR}
-borg create -p ${LOCAL_DIR}::{now:%Y-%m-%dT%H:%M:%S} .
-cd ${LOCALDIR}
+borg create -p ${BORG_SSH_DIR}::{now:%Y-%m-%dT%H:%M:%S} ${DATA_DIR}
 
 echo 'Success!'
-fusermount -u ${TEMPDIR}
