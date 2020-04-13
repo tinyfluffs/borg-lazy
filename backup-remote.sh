@@ -7,8 +7,6 @@ TEMPDIR=$(mktemp -d)
 
 command -v borg >/dev/null 2>&1 || { echo >&2 "Borg is not installed. Get it from your package manager (usually 'borgbackup' or 'borg').  Aborting."; exit 1; }
 
-command -v sshfs >/dev/null 2>&1 || { echo >&2 "SSH FS is not installed. Get it from your package manager (usually 'sshfs' or 'sshfs-fuse').  Aborting."; exit 2; }
-
 if [ ! -f "${ENVFILE}" ]; then
 	echo -e "
 	\e[41mEnvironment file not found!
