@@ -8,7 +8,7 @@ command -v borg >/dev/null 2>&1 || { echo >&2 "Borg is not installed. Get it fro
 
 command -v sshfs >/dev/null 2>&1 || { echo >&2 "SSH FS is not installed. Get it from your package manager (usually 'sshfs' or 'sshfs-fuse').  Aborting."; exit 2; }
 
-if [ ! -f "env" ]; then
+if [ ! -f "${ENVFILE}" ]; then
 	echo -e "
 	\e[41mEnvironment file not found!
 	Copy the example and edit: \`cp ./env.example ./env\`\e[39m"
