@@ -40,5 +40,6 @@ if [ "$2" = "init" ]; then
 fi
 
 borg create -p ${BORG_SSH_DIR}::{now:%Y-%m-%dT%H:%M:%S} ${DATA_DIR}
+borg prune -p --keep-within=31d --keep-weekly=4 --keep-monthly=1 ${BORG_SSH_DIR}
 
 echo 'Success!'
